@@ -1,0 +1,55 @@
+﻿@model Worktastic.Models.Company;
+@{
+    ViewData["Title"] = "Edit Company";
+}
+
+<form asp-controller="Company" asp-action="Create" formmethod="post" enctype="multipart/form-data">
+    <div class="card">
+        <div class="card-header">
+            <h4>Create Company</h4>
+        </div>
+        <div class="card-body">
+            <input hidden asp-for="Id" />
+            <div class="row">
+                <div class="col col-4">
+                    <div class="form-floating mb-3">
+                        <input class="form-control" asp-for="Name" type="text" id="form-name" placeholder="Name" required />
+                        <label for="form-name">Name</label>
+                    </div>
+                </div>
+                <div class="col align-content-lg-stretch">
+                    <div class="form-floating mb-3">
+                        <input class="form-control" asp-for="Website" type="url" id="form-website" placeholder="Website" required />
+                        <label for="form-website">Website</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-floating mb-3">
+                        <input class="form-control" type="tel" placeholder="Phone" id="form-phone" asp-for="Phone" />
+                        <label for="form-phone">Phone</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-floating mb-3">
+                        <input class="form-control" asp-for="Email" type="email" id="form-mail" placeholder="Email" required />
+                        <label for="form-mail">Email</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-auto mb-3">
+                    <span class="input-group-text d-inline-flex justify-content-start mb-1">
+                        <label for="picture" class="form-label">Picture</label>
+                    </span>
+                    <input class="form-control" name="picture" type="file" id="picture">
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button class="btn btn-primary" type="submit">Update</button>
+            <button class="btn btn-success" type="reset">Reset</button>
+        </div>
+    </div>
+</form>

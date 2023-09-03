@@ -1,0 +1,77 @@
+﻿@model Worktastic.Models.Job;
+@{
+    ViewData["Title"] = "Create Job";
+}
+
+<form asp-controller="Job" asp-action="Create" formmethod="post">
+    <div class="card">
+        <div class="card-header">
+            <h4>Create Job</h4>
+        </div>
+        <div class="card-body">
+            <input hidden asp-for="Id" />
+            <div class="row form">
+                <div class="col">
+                    <div class="form-floating mb-3">
+                        <input class="form-control " asp-for="Title" type="text" id="form-title" placeholder="Title" required />
+                        <label for="form-title">Title</label>
+                    </div>
+                </div> 
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" placeholder="Description" id="form-description" asp-for="Description" style="height: 150px"></textarea>
+                        <label for="form-description">Description</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-floating mb-3">
+                        <input class="form-control" asp-for="Location" type="text" id="form-location" placeholder="Location" required />
+                        <label for="form-location">Location</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-floating mb-3">
+                        <input class="form-control" asp-for="Type" type="text" id="form-type" placeholder="Type" required />
+                        <label for="form-type">Type</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-floating mb-3">
+                        <input class="form-control" asp-for="Category" type="text" id="form-category" placeholder="Category" />
+                        <label for="form-category">Category</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-floating mb-3">
+                        <input class="form-control" asp-for="Salary" type="number" id="form-salary" placeholder="Salary in €" />                        
+                        <label for="form-salary">Salary in €</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-floating mb-3">                        
+                        <input class="form-control" asp-for="StartDate" type="text" onfocus="(this.type='date')" onblur="if(!this.value)this.type='text'" id="form-starting-date" placeholder="Starting Date" />
+                        <label for="form-starting-date">Starting Date</label>
+                    </div>                    
+                </div>    
+                <div class="col">
+                    <div class="form-floating mb-3">
+                        <input class="form-control" asp-for="Duration" type="datetime" id="form-duration" placeholder="Duration" />
+                        <label for="form-duration">Duration</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button class="btn btn-primary" type="submit">Create</button>
+            <button class="btn btn-secondary" type="reset">Reset</button>
+        </div>
+    </div>
+</form>

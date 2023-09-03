@@ -1,0 +1,34 @@
+﻿@model Worktastic.Models.Company;
+@{
+    ViewData["Title"] = "Company";
+}
+
+<h1>Company Page</h1>
+<hr />
+<a class="btn btn-primary" asp-controller="Company" asp-action="New">Create Job</a>
+<hr />
+
+<table class="table table-bordered table-hover table-striped">
+    <thead class="table-secondary">
+        <tr>
+            <th>Name</th>
+            <th>Telephone</th>
+            <th>E-Mail</th>
+            <th>Website</th>
+            <th>Image</th>
+            <th>Jobs</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@Model.Name</td>
+            <td>@Model.Phone</td>
+            <td>@Model.Email</td>
+            <td>@Model.Website</td>
+            <td>@Model.Image</td>
+            <td><a href="#">Jobs</a></td>
+            <td><a class="btn btn-warning" asp-route-id="" asp-controller="Company" asp-action="Edit">Edit</a></td>
+        </tr>
+    </tbody>
+</table>
