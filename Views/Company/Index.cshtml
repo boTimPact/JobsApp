@@ -5,8 +5,6 @@
 
 <h1>Company Page</h1>
 <hr />
-<a class="btn btn-primary" asp-controller="Company" asp-action="New">Create Job</a>
-<hr />
 
 <table class="table table-bordered table-hover table-striped">
     <thead class="table-secondary">
@@ -16,7 +14,6 @@
             <th>E-Mail</th>
             <th>Website</th>
             <th>Image</th>
-            <th>Jobs</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -27,8 +24,18 @@
             <td>@Model.Email</td>
             <td>@Model.Website</td>
             <td>@Model.Image</td>
-            <td><a href="#">Jobs</a></td>
-            <td><a class="btn btn-warning" asp-route-id="" asp-controller="Company" asp-action="Edit">Edit</a></td>
+            <td>
+                <div class="btn-group">
+                    <a class="btn btn-warning" asp-route-id="@Model.Id" asp-controller="Company" asp-action="Edit">Edit</a>
+                    <a class="btn btn-danger" asp-route-id="@Model.Id" asp-action="Delete" asp-controller="Company">Delete</a>
+                </div>
+            </td>
         </tr>
     </tbody>
 </table>
+
+<div class="col-auto d-flex justify-content-between">
+    <a class="btn btn-primary" asp-controller="Job" asp-action="Index">Your Jobs</a>
+    <a class="btn btn-secondary" asp-controller="Home" asp-action="Index">Back</a>
+</div>
+<hr />

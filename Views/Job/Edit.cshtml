@@ -3,7 +3,7 @@
     ViewData["Title"] = "Create Job";
 }
 
-<form class="mt-5" asp-controller="Job" asp-action="Create" formmethod="post">
+<form class="mt-5" asp-controller="Job" asp-action="Update" formmethod="post">
     <div class="card">
         <div class="card-header">
             <h4>Create Job</h4>
@@ -16,12 +16,12 @@
                         <input class="form-control " asp-for="Title" type="text" id="form-title" placeholder="Title" required />
                         <label for="form-title">Title</label>
                     </div>
-                </div> 
+                </div>
             </div>
             <div class="row">
                 <div class="col">
                     <div class="form-floating mb-3">
-                        <textarea class="form-control" placeholder="Description" id="form-description" asp-for="Description" required style="height: 150px"></textarea>
+                        <textarea class="form-control" placeholder="Description" id="form-description" asp-for="Description" style="height: 150px" required></textarea>
                         <label for="form-description">Description</label>
                     </div>
                 </div>
@@ -43,24 +43,24 @@
             <div class="row">
                 <div class="col">
                     <div class="form-floating mb-3">
-                        <input class="form-control" asp-for="Category" type="text" id="form-category" placeholder="Category" required/>
+                        <input class="form-control" asp-for="Category" type="text" id="form-category" placeholder="Category" />
                         <label for="form-category">Category</label>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-floating mb-3">
-                        <input class="form-control" asp-for="Salary" type="number" id="form-salary" placeholder="Salary in €" />                        
+                        <input class="form-control" asp-for="Salary" type="number" id="form-salary" placeholder="Salary in €" />
                         <label for="form-salary">Salary in €</label>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
-                    <div class="form-floating mb-3">                        
+                    <div class="form-floating mb-3">
                         <input class="form-control" asp-for="StartDate" type="text" onfocus="(this.type='date')" onblur="if(!this.value)this.type='text'" id="form-starting-date" placeholder="Starting Date" />
                         <label for="form-starting-date">Starting Date</label>
-                    </div>                    
-                </div>    
+                    </div>
+                </div>
                 <div class="col">
                     <div class="form-floating mb-3">
                         <input class="form-control" asp-for="Duration" type="datetime" id="form-duration" placeholder="Duration" />
@@ -72,7 +72,7 @@
         <div class="card-footer container">
             <div class="row justify-content-between">
                 <div class="btn-group col-1">
-                    <button class="btn btn-primary" type="submit">Create</button>
+                    <button class="btn btn-primary" type="submit">Update</button>
                     <button class="btn btn-outline-success" type="reset">Reset</button>
                 </div>
                 <div class="col-2 d-flex justify-content-end">

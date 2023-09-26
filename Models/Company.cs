@@ -11,6 +11,6 @@ namespace Worktastic.Models
         public string? Website { get; set; }
         public byte[]? Image { get; set; }
         public List<Job> Jobs { get; set; }
-        
+        public User User { get; set; }
     }
 }

@@ -1,24 +1,39 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using Worktastic.Data;
 using Worktastic.Models;
 
 namespace Worktastic.Controllers
 {
+    [Authorize]
     public class CompanyController : Controller
     {
         
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public CompanyController(ApplicationDbContext context)
+        public CompanyController(ApplicationDbContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var user = await _userManager.GetUserAsync(User);
+            if (!user.IsCompanyAccount)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            Company company = _context.Companies.SingleOrDefault(x => x.User == user);
+            if (company == null)
+            {
+                return RedirectToAction("New");
+            }
+            return View(company);
         }
 
         public IActionResult New()
@@ -27,7 +42,7 @@ namespace Worktastic.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Company company, IFormFile picture) 
+        public async Task<IActionResult> Create(Company company, IFormFile picture) 
         {
             if(picture != null)
             {
@@ -39,30 +54,57 @@ namespace Worktastic.Controllers
                 }
             }
 
+            company.User = await _userManager.GetUserAsync(User);
+            
+            if(company.User is null)
+            {
+                return BadRequest();
+            }
+
             _context.Companies.Add(company);
             _context.SaveChanges();
 
             return RedirectToAction("Index");
         }
 
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var company = _context.Companies.SingleOrDefault(x => x.Id == id);
+            var user = await _userManager.GetUserAsync(User);
+            var company = _context.Companies.
+                Include(c => c.User).
+                SingleOrDefault(x => x.Id == id);
 
             if(company == null)
             {
                 return NotFound();
             }
 
+            if (!company.User.Equals(user))
+            {
+                return Unauthorized();
+            }
+
             return View(company);
         }
 
-        [HttpPut]
-        public IActionResult Update(Company company)
+        [HttpPost]
+        public IActionResult Update(Company company, IFormFile picture)
         {
+
+            if (picture != null)
+            {
+                using (var stream = new MemoryStream())
+                {
+                    picture.CopyTo(stream);
+                    var bytes = stream.ToArray();
+                    company.Image = bytes;
+                }
+            }
+
             try
             {
                 _context.Companies.Update(company);
+                _context.SaveChanges();
             }catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Worktastic.Data;
 
@@ -11,9 +12,11 @@ using Worktastic.Data;
 namespace Worktastic.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230904102244_customIdentityFields")]
+    partial class customIdentityFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -180,17 +183,10 @@ namespace Worktastic.Data.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Website")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("Companies");
                 });
@@ -253,6 +249,9 @@ namespace Worktastic.Data.Migrations
                     b.Property<byte?>("Age")
                         .HasColumnType("tinyint");
 
+                    b.Property<int?>("CompanyId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -268,9 +267,6 @@ namespace Worktastic.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
-
-                    b.Property<bool?>("IsCompanyAccount")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Lastname")
                         .IsRequired()
@@ -311,6 +307,8 @@ namespace Worktastic.Data.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -374,15 +372,6 @@ namespace Worktastic.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Worktastic.Models.Company", b =>
-                {
-                    b.HasOne("Worktastic.Models.User", "User")
-                        .WithOne("Company")
-                        .HasForeignKey("Worktastic.Models.Company", "UserId");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Worktastic.Models.Job", b =>
                 {
                     b.HasOne("Worktastic.Models.Company", "Company")
@@ -394,14 +383,18 @@ namespace Worktastic.Data.Migrations
                     b.Navigation("Company");
                 });
 
+            modelBuilder.Entity("Worktastic.Models.User", b =>
+                {
+                    b.HasOne("Worktastic.Models.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId");
+
+                    b.Navigation("Company");
+                });
+
             modelBuilder.Entity("Worktastic.Models.Company", b =>
                 {
                     b.Navigation("Jobs");
-                });
-
-            modelBuilder.Entity("Worktastic.Models.User", b =>
-                {
-                    b.Navigation("Company");
                 });
 #pragma warning restore 612, 618
         }

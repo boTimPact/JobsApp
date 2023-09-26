@@ -1,5 +1,118 @@
-﻿@{
+﻿@model List<Job>
+@{
     ViewData["Title"] = "Home";
 }
+<div class="p-5 my-3 bg-dark rounded-3">
+    <h1 class="display-1 text-light text-center">Worktastic</h1>
+</div>
 
-<h1>Home Page</h1>
+<h4>Search for your dream job!</h4>
+
+<div class="row d-flex justify-content-between mt-2">
+    <div class="col-10">
+        <input class="form-control form-control-lg" type="text" placeholder="What are you looking for?"/>
+    </div>
+    <div class="col-auto">
+        <button class="btn btn-lg btn-primary">Search</button>
+    </div>
+</div>
+<hr />
+
+<div class="list-group mt-3">
+    @{
+        foreach(var job in Model)
+        {
+            <a href="#" onclick="showModal(@job.Id)" class="list-group-item list-group-item-action flex-column align-items-start" data-bs-toggle="modal" data-bs-target="#JobModal">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">@job.Title</h5>
+                    <small>@job.Location</small>
+                </div>
+                <p class="mb-1">
+                    @job.Company.Name
+                </p>
+                <small>@job.StartDate.Value.ToShortDateString()</small>
+            </a>
+        }
+    }
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="JobModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between" id="modalCompany">
+                        <div class="container-fluid w-75">
+                            <div id="modalCompanyName" class="list-inline-item mb-2"></div>
+                            <ul class="list-group container container-fluid">
+                                <li class="list-group-item" id="modalCompanyPhone">Telephone: -</li>
+                                <li class="list-group-item" id="modalCompanyMail">E-Mail: -</li>
+                                <li class="list-group-item">Website: <a id="modalCompanyWebsite">-</a></li>
+                            </ul>
+                        </div>
+                        <img class="img-fluid img-thumbnail rounded w-25" id="modalImage" src="" />
+                    </li>
+                    <li class="list-group-item" id="modalLocation"></li>
+                    <li class="list-group-item" id="modalType"></li>
+                    <li class="list-group-item" id="modalCategory"></li>
+                    <li class="list-group-item" id="modalSalary">Salary in €: -</li>
+                    <li class="list-group-item" id="modalStartdate">Start: -</li>
+                </ul>
+                <div class="card mt-3">
+                    <div class="card-header">Description</div>
+                    <div class=" card-body" id="modalDescription"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        function showModal(id){
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("GetJob")",
+                data: {
+                    id: id
+                },
+                success: function (data){
+                    debugger;
+                    
+                    $('#modalTitle').text(data.title);
+
+                    $('#modalCompanyName').text(data.company.name);
+                    if (data.company.phone !== null) $('#modalCompanyPhone').text("Telephone: " + data.company.phone);
+                    if (data.company.email !== null) $('#modalCompanyMail').text("E-Mail: " + data.company.email);
+                    if (data.company.website !== null) {
+                        $('#modalCompanyWebsite').text(data.company.website);
+                        $('#modalCompanyWebsite').attr("href", data.company.website);
+                    }
+
+                    $('#modalLocation').text("Location: " + data.location);
+                    $('#modalType').text("Type: " + data.type);
+                    $('#modalCategory').text("Category: " + data.category);
+                    if (data.salary !== null) $('#modalSalary').text("Salary: " + data.salary + "€");
+                    if (data.startDate !== null) {
+                        const date = data.startDate.substring(0, 10).split('-');
+                        $('#modalStartdate').text("Start: " + date[2] + "." + date[1] + "." + date[0]); //date.toDateString());
+                    }
+
+                    if (data.company.image !== null) {
+                        $('#modalImage').attr("src", `data:image/png;base64,${data.company.image}`)
+                    }
+
+                    $('#modalDescription').text(data.description);
+
+                    $('#JobModal').modal('show')
+                }
+            })
+        }
+    </script>
+}

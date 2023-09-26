@@ -3,10 +3,10 @@
     ViewData["Title"] = "Edit Company";
 }
 
-<form asp-controller="Company" asp-action="Create" formmethod="post" enctype="multipart/form-data">
+<form class="mt-5" asp-controller="Company" asp-action="Update" formmethod="post" enctype="multipart/form-data">
     <div class="card">
         <div class="card-header">
-            <h4>Create Company</h4>
+            <h4>Edit Details</h4>
         </div>
         <div class="card-body">
             <input hidden asp-for="Id" />
@@ -47,9 +47,16 @@
                 </div>
             </div>
         </div>
-        <div class="card-footer">
-            <button class="btn btn-primary" type="submit">Update</button>
-            <button class="btn btn-success" type="reset">Reset</button>
+        <div class="card-footer container">
+            <div class="row justify-content-between">
+                <div class="btn-group col-1">
+                    <button class="btn btn-primary" type="submit">Update</button>
+                    <button class="btn btn-outline-success" type="reset">Reset</button>
+                </div>
+                <div class="col-2 d-flex justify-content-end">
+                    <a class="btn btn-secondary align-self-end" href="javascript:history.go(-1)">Back</a>
+                </div>
+            </div>
         </div>
     </div>
 </form>
